@@ -103,6 +103,9 @@ export const routes: Routes = [
           title: 'Tables'
         }
       },
+      {path: 'tabl2', loadComponent:()=> import('./tabl2/tabl2.component').then(m => m.Tabl2Component),
+        data:{title:'2Table'}
+      },
       {
         path: 'tabs',
         loadComponent: () => import('./tabs/tabs.component').then(m => m.AppTabsComponent),
