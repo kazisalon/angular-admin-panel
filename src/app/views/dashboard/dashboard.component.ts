@@ -1,4 +1,6 @@
-import { DOCUMENT, NgStyle } from '@angular/common';
+// dashboard.component.ts
+import { CommonModule } from '@angular/common';
+import { DOCUMENT } from '@angular/common';
 import { Component, DestroyRef, effect, inject, OnInit, Renderer2, signal, WritableSignal } from '@angular/core';
 import { FormControl, FormGroup, ReactiveFormsModule } from '@angular/forms';
 import { ChartOptions } from 'chart.js';
@@ -17,10 +19,19 @@ import {
   ProgressComponent,
   RowComponent,
   TableDirective,
-  TextColorDirective
+  TextColorDirective,
+  BadgeComponent,
+  ButtonModule,
+  GridModule,
+  CardModule,
+  TableModule,
+  BadgeModule,
+  AvatarModule
 } from '@coreui/angular';
 import { ChartjsComponent } from '@coreui/angular-chartjs';
 import { IconDirective } from '@coreui/icons-angular';
+import { IconModule, IconSetService } from '@coreui/icons-angular';
+import { cilPencil, cilTrash, cilZoom, cilCloudDownload } from '@coreui/icons';
 
 import { WidgetsBrandComponent } from '../widgets/widgets-brand/widgets-brand.component';
 import { WidgetsDropdownComponent } from '../widgets/widgets-dropdown/widgets-dropdown.component';
@@ -41,95 +52,105 @@ interface IUser {
 }
 
 @Component({
-    templateUrl: 'dashboard.component.html',
-    styleUrls: ['dashboard.component.scss'],
-    imports: [WidgetsDropdownComponent, TextColorDirective, CardComponent, CardBodyComponent, RowComponent, ColComponent, ButtonDirective, IconDirective, ReactiveFormsModule, ButtonGroupComponent, FormCheckLabelDirective, ChartjsComponent, NgStyle, CardFooterComponent, GutterDirective, ProgressBarDirective, ProgressComponent, WidgetsBrandComponent, CardHeaderComponent, TableDirective, AvatarComponent]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.scss'],
+  standalone: true,
+  imports: [
+    CommonModule,
+    ButtonModule,
+    GridModule,
+    IconModule,
+    CardModule,
+    TableModule,
+    BadgeModule,
+    AvatarModule,
+    WidgetsDropdownComponent,
+    TextColorDirective,
+    CardComponent,
+    CardBodyComponent,
+    RowComponent,
+    ColComponent,
+    ButtonDirective,
+    IconDirective,
+    ReactiveFormsModule,
+    ButtonGroupComponent,
+    FormCheckLabelDirective,
+    ChartjsComponent,
+    CardFooterComponent,
+    GutterDirective,
+    ProgressBarDirective,
+    ProgressComponent,
+    WidgetsBrandComponent,
+    CardHeaderComponent,
+    TableDirective,
+    AvatarComponent,
+    BadgeComponent
+  ]
 })
 export class DashboardComponent implements OnInit {
-
   readonly #destroyRef: DestroyRef = inject(DestroyRef);
   readonly #document: Document = inject(DOCUMENT);
   readonly #renderer: Renderer2 = inject(Renderer2);
   readonly #chartsData: DashboardChartsData = inject(DashboardChartsData);
+  readonly #iconSetService = inject(IconSetService);
+
+  constructor() {
+    this.#iconSetService.icons = { cilPencil, cilTrash, cilZoom, cilCloudDownload };
+  }
 
   public users: IUser[] = [
     {
-      name: 'Yiorgos Avraamu',
-      state: 'New',
-      registered: 'Jan 1, 2021',
-      country: 'Us',
-      usage: 50,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'Mastercard',
-      activity: '10 sec ago',
+      name: 'Bishal Bashyal',
+      state: 'Complete',
+      registered: '12/20/2024',
+      country: 'Male',
+      usage: 45,
+      period: 'OPD',
+      payment: 'Diabetes',
+      activity: 'Active',
       avatar: './assets/images/avatars/1.jpg',
       status: 'success',
       color: 'success'
     },
     {
-      name: 'Avram Tarasios',
-      state: 'Recurring ',
-      registered: 'Jan 1, 2021',
-      country: 'Br',
-      usage: 10,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'Visa',
-      activity: '5 minutes ago',
+      name: 'Samrat Ghumire',
+      state: 'Complete',
+      registered: '12/20/2024',
+      country: 'Male',
+      usage: 45,
+      period: 'OPD',
+      payment: 'Diabetes',
+      activity: 'Active',
       avatar: './assets/images/avatars/2.jpg',
-      status: 'danger',
-      color: 'info'
+      status: 'success',
+      color: 'success'
     },
     {
-      name: 'Quintin Ed',
-      state: 'New',
-      registered: 'Jan 1, 2021',
-      country: 'In',
-      usage: 74,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'Stripe',
-      activity: '1 hour ago',
+      name: 'Anil Regmi',
+      state: 'In Progress',
+      registered: '12/20/2024',
+      country: 'Male',
+      usage: 45,
+      period: 'OPD',
+      payment: 'Diabetes',
+      activity: 'Active',
       avatar: './assets/images/avatars/3.jpg',
       status: 'warning',
       color: 'warning'
     },
     {
-      name: 'Enéas Kwadwo',
-      state: 'Sleep',
-      registered: 'Jan 1, 2021',
-      country: 'Fr',
-      usage: 98,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'Paypal',
-      activity: 'Last month',
+      name: 'Puru Karki',
+      state: 'In Progress',
+      registered: '1/20/2025',
+      country: 'Male',
+      usage: 45,
+      period: 'OPD',
+      payment: 'Diabetes',
+      activity: 'Active',
       avatar: './assets/images/avatars/4.jpg',
-      status: 'secondary',
-      color: 'danger'
-    },
-    {
-      name: 'Agapetus Tadeáš',
-      state: 'New',
-      registered: 'Jan 1, 2021',
-      country: 'Es',
-      usage: 22,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'ApplePay',
-      activity: 'Last week',
-      avatar: './assets/images/avatars/5.jpg',
-      status: 'success',
-      color: 'primary'
-    },
-    {
-      name: 'Friderik Dávid',
-      state: 'New',
-      registered: 'Jan 1, 2021',
-      country: 'Pl',
-      usage: 43,
-      period: 'Jun 11, 2021 - Jul 10, 2021',
-      payment: 'Amex',
-      activity: 'Yesterday',
-      avatar: './assets/images/avatars/6.jpg',
-      status: 'info',
-      color: 'dark'
+      status: 'warning',
+      color: 'warning'
     }
   ];
 
@@ -167,9 +188,13 @@ export class DashboardComponent implements OnInit {
   }
 
   updateChartOnColorModeChange() {
-    const unListen = this.#renderer.listen(this.#document.documentElement, 'ColorSchemeChange', () => {
-      this.setChartStyles();
-    });
+    const unListen = this.#renderer.listen(
+      this.#document.documentElement,
+      'ColorSchemeChange',
+      () => {
+        this.setChartStyles();
+      }
+    );
 
     this.#destroyRef.onDestroy(() => {
       unListen();
@@ -185,5 +210,27 @@ export class DashboardComponent implements OnInit {
         this.mainChartRef().update();
       });
     }
+  }
+
+  // Patient record management methods
+  onView(user: IUser): void {
+    console.log('Viewing patient:', user);
+    alert(`Viewing patient: ${user.name}`);
+  }
+
+  onEdit(user: IUser): void {
+    console.log('Editing patient:', user);
+    alert(`Editing patient: ${user.name}`);
+  }
+
+  onDelete(user: IUser): void {
+    console.log('Deleting patient:', user);
+    this.users = this.users.filter(u => u.name !== user.name);
+    alert(`Patient ${user.name} deleted successfully`);
+  }
+
+  // Helper method for status color
+  getStatusColor(status: string): string {
+    return status.toLowerCase() === 'complete' ? 'success' : 'warning';
   }
 }
